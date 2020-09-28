@@ -1,9 +1,10 @@
 class VigenereCipheringMachine {
-  encrypt() {
+  encrypt(args) {
+    if (typeof args == 'undefined') throw Error;
     
   }    
-  decrypt() {
-    
+  decrypt(args) {
+    if (typeof args == 'undefined') throw Error;
   }
 }
 
