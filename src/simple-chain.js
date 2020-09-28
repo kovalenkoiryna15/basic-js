@@ -4,19 +4,21 @@ const chainMaker = {
     return this.chain.length;
   },
   addLink(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined') {      
       this.chain.push(`( )`);
     } else {
       this.chain.push(`( ${value} )`);
-    }    
+    }
+    return this
   },
   removeLink(position) {
-    if (position < 0 || position > this.chain.length || !(Number.isInteger(value)) ) {
+    if (position < 0 || position > this.chain.length || !(Number.isInteger(position)) ) {
       this.chain.push('Error');
       throw Error;
     } else {
-      this.chain.splice(position, 1);
-    }    
+      this.chain.splice(position-1, 1);
+    }
+    return this   
   },
   reverseChain() {
     if (this.chain.length < 2 ) {
@@ -24,12 +26,15 @@ const chainMaker = {
     } else {
       this.chain.reverse();
     }
+    return this
   },
   finishChain() {
     if (this.chain.includes('Error')) {
       this.chain = [];
     } else {
-      return this.chain.join(`~~`);
+      let chain = this.chain.join(`~~`); 
+      this.chain = Array(0);
+      return chain;
     }    
   }
 };
