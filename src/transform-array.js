@@ -9,32 +9,40 @@ module.exports = function transform(arr) {
     arr.forEach( (item, index, arr) => {
       if (item == undefined || item instanceof Array) {
         return [];
-      } else if (item == '--discard-next') {
-        if (arr[index+1] > arr.length) {
-          arr.splice(index, 1);
-        } else {
-          arr.splice(index, 2);
-        }        
-      } else if (item == '--discard-prev') {
-        if (arr[index-1] < 0) {
-          arr.splice(index, 1);
-        } else {
-          arr.splice(index-1, 2);
-        }         
-      } else if (item == '--double-next') {
-        if (arr[index+1] > arr.length) {
-          arr.splice(index, 1);
-        } else {
-          arr.splice(index, 1, arr[index+1]);
-        }        
-      } else if (item == '--double-prev') {
-        if (arr[index-1] < 0) {
-          arr.splice(index, 1);
-        } else {
-          arr.splice(index, 1, arr[index-1]);
+      } else {
+        switch(item) {
+          case '--discard-next': 
+            if (arr[index+1] > arr.length) {
+              arr.splice(index, 1);
+            } else {
+              arr.splice(index, 2);
+            }
+            break;
+          case '--discard-prev': 
+            if (arr[index-1] < 0 || index === 0) {
+              arr.splice(index, 1);
+            } else {
+              arr.splice(index-1, 2);
+            }
+            break;
+          case '--double-next':
+            if (index+1 > arr.length-1) {
+              arr.splice(index, 1);
+            } else {
+              arr.splice(index, 1, arr[index+1]);
+            }
+            break;
+          case '--double-prev':
+            if (arr[index-1] < 0 || index === 0) {
+              arr.splice(index, 1);
+            } else {
+              arr.splice(index, 1, arr[index-1]);
+            }
+            break;
+          default: break;                      
         }        
       }
-    });
+    })
     return arr;
-  };
-};
+  }
+}
