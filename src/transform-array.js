@@ -6,43 +6,35 @@ module.exports = function transform(arr) {
   } else if (arr.length == 0) {
     return arr;
   } else {
-    arr.forEach( (item, index, arr) => {
-      if (item == undefined || item instanceof Array) {
-        return [];
-      } else {
-        switch(item) {
-          case '--discard-next': 
-            if (arr[index+1] > arr.length) {
-              arr.splice(index, 1);
-            } else {
-              arr.splice(index, 2);
-            }
-            break;
-          case '--discard-prev': 
-            if (arr[index-1] < 0 || index === 0) {
-              arr.splice(index, 1);
-            } else {
-              arr.splice(index-1, 2);
-            }
-            break;
-          case '--double-next':
-            if (index+1 > arr.length-1) {
-              arr.splice(index, 1);
-            } else {
-              arr.splice(index, 1, arr[index+1]);
-            }
-            break;
-          case '--double-prev':
-            if (arr[index-1] < 0 || index === 0) {
-              arr.splice(index, 1);
-            } else {
-              arr.splice(index, 1, arr[index-1]);
-            }
-            break;
-          default: break;                      
-        }        
+    let newArray = arr.map((el, index, arr) => {    
+      if (el === '--double-next') {
+        if (index+1 === arr.length) return null
+        return arr[index+1]
       }
+      arr.lenght 
+      if (el === '--double-prev') {
+        if (arr[index-2] === '--discard-next') {
+          return null
+        } else {
+          if (index === 0) return null
+          return arr[index-1]
+        }      
+      }
+  
+      if(arr[index-1] === '--discard-next') return null;
+      if(arr[index+1] === '--discard-prev') return null;
+  
+      if (el !== '--discard-next' && el !== '--discard-prev') {
+        return el
+      } else {
+        return null
+      }    
     })
-    return arr;
+    let newArray2 = [];
+    newArray.forEach(el=> {
+      if(el !== null) {newArray2.push(el)}
+    });
+    
+    return newArray2; 
   }
 }
