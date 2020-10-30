@@ -1,5 +1,12 @@
 class VigenereCipheringMachine {
+  constructor(mod) {
+    this.mod = mod;
+  }
   encrypt(m, k) {
+    if (!(this.mod || typeof this.mod === 'undefined' || this.mod === null)) {
+      m = m.split('').reverse().join('');  
+    } 
+    
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     if (typeof m == 'undefined' || typeof k == 'undefined') throw Error;
     
@@ -11,11 +18,11 @@ class VigenereCipheringMachine {
     });    
     //messageWordsByChars = [ [ 'A', 'T', 'T', 'A', 'C', 'K' ], ['A', 'T'], [ 'D', 'O', 'W', 'N', '!' ] ]
 
-    let codesOfMessage = messageWordsByChars.map(word => {
-      return word.map(el => {    
+    let codesOfMessage = messageWordsByChars.map(word => {      
+      return word.map(el => {            
         if (alphabet.indexOf(el) === -1) return el;
         return alphabet.indexOf(el);
-      })
+      })     
     });
     //codesOfMessage = [ [ 0, 19, 19, 0, 2, 10 ], [ 0, 19 ], [ 3, 0, 22, 13, '!' ] ]
 
@@ -69,13 +76,24 @@ class VigenereCipheringMachine {
     })
     // solutionWords = [ 'AEIHQX', 'SX', 'DLLU!' ]
 
-    let solution = solutionWords.map(el => el.join('')).join(' ')
-    // solution = 'AEIHQX SX DLLU!'
-    return solution; 
+    let solution = solutionWords.map(el => el.join(''))
+
+    if (this.mod || typeof this.mod === 'undefined' || this.mod === null) {
+      // solution = 'AEIHQX SX DLLU!'
+      return solution.join(' '); 
+    } else {
+      return solution.reverse().join(' ');
+    }
+    
   }    
   // =============================================================================================================
 
   decrypt(cipherMessage, k) {
+
+    if (!(this.mod || typeof this.mod === 'undefined' || this.mod === null)) {
+      cipherMessage = cipherMessage.split('').reverse().join('');  
+    } 
+
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     if (typeof cipherMessage == 'undefined' || typeof k == 'undefined') throw Error;
     
@@ -145,10 +163,14 @@ class VigenereCipheringMachine {
     })
     // solutionWords = ['ATTACK', 'AT', 'DAWN!']
 
-    let solution = solutionWords.map(el => el.join('')).join(' ')
-    // solution = 'ATTACK AT DAWN!'
-    return solution; 
-
+    let solution = solutionWords.map(el => el.join(''))
+    
+    // if (this.mod || typeof this.mod === 'undefined' || this.mod === null) {
+    //   // solution = 'ATTACK AT DAWN!'
+      return solution.join(' '); 
+    // } else {
+    //   return solution.reverse().join(' ');
+    // }
   }
 }
 
