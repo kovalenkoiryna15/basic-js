@@ -4,38 +4,36 @@ const chainMaker = {
     return this.chain.length;
   },
   addLink(value) {
-    if (typeof value == 'undefined') {      
-      this.chain.push(`( )`);
-    } else {
+    // if (typeof value === 'undefined') {      
+    //   this.chain.push(`( )`);
+    // } else {
       this.chain.push(`( ${value} )`);
-    }
-    return this
+    // }
+    return this;
   },
   removeLink(position) {
-    if (position < 0 || position > this.chain.length || !(Number.isInteger(position)) ) {
-      this.chain.push('Error');
-      throw Error;
-    } else {
-      this.chain.splice(position-1, 1);
+    if (typeof position === 'number' && (position ^ 0) === position) {
+      if (position < 1 || position > this.getLength() ) {
+        this.chain.length = 0;
+        throw new Error ('Linked position is out of range.');
+      } else if (position === 0) {
+        this.chain.splice(position, 1);
+      } else {
+        this.chain.splice(position-1, 1);
+      }      
+      return this;
     }
-    return this   
+    this.chain.length = 0;    
+    return new Error ('Position must be an integer.');
   },
   reverseChain() {
-    if (this.chain.length < 2 ) {
-
-    } else {
-      this.chain.reverse();
-    }
-    return this
+    this.chain.reverse();
+    return this;
   },
   finishChain() {
-    if (this.chain.includes('Error')) {
-      this.chain = [];
-    } else {
-      let chain = this.chain.join(`~~`); 
-      this.chain = Array(0);
-      return chain;
-    }    
+    const chain = this.chain.join(`~~`); 
+    this.chain.length = 0;     
+    return chain;  
   }
 };
 
